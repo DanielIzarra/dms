@@ -24,3 +24,11 @@ Route::resource('User', 'UserController');
 Route::get('/profile','UserController@edit')->name('profile');
 
 Route::patch('profile/update/{user}', 'UserController@update')->name('user.update');
+
+Route::resource('File', 'FileController');
+
+Route::get('/file/{file?}','FileController@show')->name('file.show');
+
+Route::post('/file/store','FileController@store')->name('file.store');
+
+Route::patch('file/update/{file}', 'FileController@update')->name('file.update');
