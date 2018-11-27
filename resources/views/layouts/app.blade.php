@@ -33,22 +33,22 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        @can('roles.index')
+                        @can('roles_index')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Roles') }}</a>
                         </li>
                         @endcan
-                        @can('users.index')
+                        @can('users_index')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('users.index') }}">{{ __('Users') }}</a>
                         </li>
                         @endcan
-                        @can('companies.index')
+                        @can('companies_index')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('companies.index') }}">{{ __('Companies') }}</a>
                         </li>
                         @endcan
-                        @can('departments.index')
+                        @can('departments_index')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('departments.index') }}">{{ __('Departments') }}</a>
                         </li>
