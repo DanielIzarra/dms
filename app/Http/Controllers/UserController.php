@@ -6,6 +6,7 @@ use App\User;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -17,7 +18,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::paginate();
+
+        return view('users.index', compact('users'));
+
     }
 
     /**
@@ -27,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -38,7 +42,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        if($validator->fails()) {
+            return Redirect::back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        $request['password'] = Hash::make(request('password'));
+        
+        User::create($request->all());
+
+        return back()->with('status', 'User created');
     }
 
     /**
@@ -49,7 +69,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -58,11 +78,8 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(User $user)
     {
-        $user = User::where('id', Auth::user()->id)
-                ->first();
-                
         return view('users.edit', compact('user'));
     }
 
@@ -76,26 +93,30 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required'
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
         $user->name = request('name');
 
         if (request('password')) {
             $this->validate(request(), [
-                'password' => 'min:6|confirmed'
+                'password' => 'required|string|min:6|confirmed',
             ]);
 
-            $user->password = bcrypt(request('password'));
+            $user->password = Hash::make(request('password'));
         }
 
         if($validator->fails()) {
-            return Redirect::back()->withErrors($validator);
+            return Redirect::back()
+                ->withInput()
+                ->withErrors($validator);
         }
         
         $user->save();
 
-        return back()->with('status', 'Profile updated!');
+        return back()->with('status', 'Profile updated');
     } 
 
     /**
@@ -106,6 +127,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return back()->with('status', 'User deleted');
     }
 }
