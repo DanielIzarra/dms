@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Validator;
+use Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -43,8 +44,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -57,6 +58,8 @@ class UserController extends Controller
         $request['password'] = Hash::make(request('password'));
         
         User::create($request->all());
+
+       // $request->user()->sendEmailVerificationNotification();
 
         return back()->with('status', 'User created');
     }
@@ -93,20 +96,12 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'name' => 'required|string|max:191',
+            'password' => 'nullable|string|min:6|confirmed|max:191',
         ]);
 
         $user->name = request('name');
-
-        if (request('password')) {
-            $this->validate(request(), [
-                'password' => 'required|string|min:6|confirmed',
-            ]);
-
-            $user->password = Hash::make(request('password'));
-        }
+        $user->password = Hash::make(request('password'));
 
         if($validator->fails()) {
             return Redirect::back()
