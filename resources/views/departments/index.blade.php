@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                     <div>
-                        @can('departments.create')
+                        @can('departments_create')
                             <a href="{{ route('departments.create')}}" class="btn btn-sm btn-primary float-right">create department</a>
                         @endcan                
                     </div>
@@ -27,17 +27,17 @@
                                     <td>{{ $department->id }}</td>
                                     <td>{{ $department->name }}</td>
                                     <td>
-                                        @can('departments.show')
+                                        @can('departments_show')
                                             <a href="{{ route('departments.show', $department->id) }}" class="btn btn-sm btn-outline-dark float-right">Info</a>
                                         @endcan
                                     </td>
                                     <td>
-                                        @can('departments.edit')
+                                        @can('departments_edit')
                                             <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-sm btn-outline-dark float-right">Edit</a>
                                         @endcan
                                     </td>
                                     <td>
-                                        @can('departments.destroy')
+                                        @can('departments_destroy')
                                             <form action="{{ route('departments.destroy', $department->id) }}"  method="POST">
                                                 @csrf
                                                 @method('DELETE')

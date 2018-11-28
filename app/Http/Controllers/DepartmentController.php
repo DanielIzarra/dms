@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use Validator;
+use Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DepartmentController extends Controller
 {
@@ -94,7 +97,10 @@ class DepartmentController extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
-        
+
+        $department->name = request('name');
+        $department->email = request('email');
+
         $department->save();
 
         return back()->with('status', 'Updated department data');

@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                     <div>
-                        @can('users.create')
+                        @can('users_create')
                             <a href="{{ route('users.create')}}" class="btn btn-sm btn-primary float-right">create user</a>
                         @endcan                
                     </div>
@@ -27,17 +27,17 @@
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>
-                                        @can('users.show')
+                                        @can('users_show')
                                             <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Info</a>
                                         @endcan
                                     </td>
                                     <td>
-                                        @can('users.edit')
+                                        @can('users_edit')
                                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Edit</a>
                                         @endcan
                                     </td>
                                     <td>
-                                        @can('users.destroy')
+                                        @can('users_destroy')
                                             <form action="{{ route('users.destroy', $user->id) }}"  method="POST">
                                                 @csrf
                                                 @method('DELETE')
