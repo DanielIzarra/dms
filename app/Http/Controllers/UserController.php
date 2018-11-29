@@ -97,11 +97,17 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
-            'password' => 'nullable|string|min:6|confirmed|max:191',
         ]);
 
         $user->name = request('name');
-        $user->password = Hash::make(request('password'));
+
+        if (request('password')) {
+            $this->validate(request(), [
+                'password' => 'string|min:6|confirmed|max:191',
+            ]);
+
+            $user->password = Hash::make(request('password'));
+        }
 
         if($validator->fails()) {
             return Redirect::back()
