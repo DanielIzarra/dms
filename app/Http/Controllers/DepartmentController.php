@@ -41,8 +41,15 @@ class DepartmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
-            'email' => 'nullable|string|email|max:191',
         ]);
+
+        if (request('email')) {
+            $this->validate(request(), [
+                'email' => 'string|email|max:191',
+            ]);
+
+            $department->email = request('email');
+        }
 
         if($validator->fails()) {
             return Redirect::back()
@@ -88,18 +95,24 @@ class DepartmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
-            'email' => 'nullable|string|email|max:191',
+
         ]);
+
+        $department->name = request('name');
+
+        if (request('email')) {
+            $this->validate(request(), [
+                'email' => 'string|email|max:191',
+            ]);
+
+            $department->email = request('email');
+        }
 
         if($validator->fails()) {
             return Redirect::back()
                 ->withInput()
                 ->withErrors($validator);
         }
-
-        $department->name = request('name');
-        $department->email = request('email');
-        $department->email = request('email');
 
         $department->save();
 
