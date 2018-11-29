@@ -42,8 +42,15 @@ class CompanyController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
             'cif' => 'required|string|max:191',
-            'email' => 'nullable|string|email|max:191',
         ]);
+
+        if (request('email')) {
+            $this->validate(request(), [
+                'email' => 'string|email|max:191',
+            ]);
+
+            $department->email = request('email');
+        }
 
         if($validator->fails()) {
             return Redirect::back()
@@ -90,18 +97,24 @@ class CompanyController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
             'cif' => 'required|string|max:191',
-            'email' => 'nullable|string|email|max:191',
         ]);
+
+        $company->name = request('name');
+        $company->cif = request('cif');
+
+        if (request('email')) {
+            $this->validate(request(), [
+                'email' => 'string|email|max:191',
+            ]);
+
+            $department->email = request('email');
+        }
 
         if($validator->fails()) {
             return Redirect::back()
                 ->withInput()
                 ->withErrors($validator);
         }
-
-        $company->name = request('name');
-        $company->cif = request('cif');
-        $company->email = request('email');
 
         $company->save();
 
