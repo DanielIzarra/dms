@@ -33,11 +33,6 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        @can('roles.index')
-                        <li class="nav-item <?php $isActivated = isset($roles) ? 'active' : ''; echo $isActivated; ?>">
-                            <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Roles') }}</a>
-                        </li>
-                        @endcan
                         @can('users.index')
                         <li class="nav-item <?php $isActivated = isset($users) ? 'active' : ''; echo $isActivated; ?>">
                             <a class="nav-link" href="{{ route('users.index') }}">{{ __('Users') }}</a>
@@ -51,6 +46,11 @@
                         @can('departments.index')
                         <li class="nav-item <?php $isActivated = isset($departments) ? 'active' : ''; echo $isActivated; ?>">
                             <a class="nav-link" href="{{ route('departments.index') }}">{{ __('Departments') }}</a>
+                        </li>
+                        @endcan
+                        @can('roles.index')
+                        <li class="nav-item <?php $isActivated = isset($roles) ? 'active' : ''; echo $isActivated; ?>">
+                            <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Roles') }}</a>
                         </li>
                         @endcan
                     </ul>

@@ -18,7 +18,7 @@
                                 <tr>
                                     <th width="50px">id</th>
                                     <th>Name</th>
-                                    <th colspan="3" class="col-md-2">&nbsp;</th>
+                                    <th colspan="4" class="col-md-2">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -34,6 +34,11 @@
                                     <td>
                                         @can('users_edit')
                                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Edit</a>
+                                        @endcan
+                                    </td>
+                                    <td>
+                                        @can('users_show')
+                                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Permissions</a>
                                         @endcan
                                     </td>
                                     <td>
