@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -33,7 +33,26 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @can('roles_index')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Roles') }}</a>
+                        </li>
+                        @endcan
+                        @can('users_index')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('users.index') }}">{{ __('Users') }}</a>
+                        </li>
+                        @endcan
+                        @can('companies_index')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('companies.index') }}">{{ __('Companies') }}</a>
+                        </li>
+                        @endcan
+                        @can('departments_index')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('departments.index') }}">{{ __('Departments') }}</a>
+                        </li>
+                        @endcan
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -54,7 +73,11 @@
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">
+                                        {{ __('Edit Profile') }}
+                                    </a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -64,10 +87,6 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-
-                                    <a class="dropdown-item" href="{{ route('profile') }}">
-                                    {{ __('Edit Profile') }}
-                                    </a>
                                 </div>                             
                             </li>
                         @endguest
