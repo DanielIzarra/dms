@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Role;
+use Caffeinated\Shinobi\Models\Role;
+use Caffeinated\Shinobi\Models\Permission;
+use Caffeinated\Shinobi\Traits;
+use Validator;
+use Redirect;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -12,9 +16,11 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Role $roles)
     {
-        //
+        $roles = Role::paginate();
+
+        return view('roles.index', compact('roles'));
     }
 
     /**
@@ -24,7 +30,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $permissions = Permission::all();
+        return view('roles.create', compact('permissions'));
     }
 
     /**
@@ -35,18 +42,27 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:191|unique:roles',
+            'slug' => 'required|string|max:191|unique:roles',
+            'description' => 'nullable|string|max:100',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Role $role)
-    {
-        //
+        if($validator->fails()) {
+            return Redirect::back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+        
+        $role = Role::create($request->all());
+
+        /*
+        * Sincroniza los permisos dados con el rol, 
+        * para crear las entradas en la tabla permission_role
+        */
+        $role->permissions()->sync($request->get('permissions'));
+
+        return back()->with('status', 'Role created');
     }
 
     /**
@@ -57,7 +73,8 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        $permissions = Permission::all();
+        return view('roles.edit', compact('role', 'permissions'));
     }
 
     /**
@@ -69,7 +86,32 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:191',
+            'slug' => 'required|string|max:191',
+            'description' => 'nullable|string|max:100',
+        ]);
+
+        if($validator->fails()) {
+            return Redirect::back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+        
+        /* 
+        * 'name' y 'slug' deben de ser únicos en la base de datos, 
+        * se controla la excepción 
+        */        
+        try {
+            $role->update($request->all());
+            return back()->with('status', 'Role updated');
+        } catch(\Illuminate\Database\QueryException $ex) {
+            $validator->getMessageBag()->add('name', 'Make sure there is no other role with this name');
+            $validator->getMessageBag()->add('slug', 'Make sure there is no other role with this slug');
+            return Redirect::back()
+                ->withInput()
+                ->withErrors($validator);
+        }
     }
 
     /**
@@ -80,6 +122,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+
+        return back()->with('status', 'Role deleted');
     }
 }
