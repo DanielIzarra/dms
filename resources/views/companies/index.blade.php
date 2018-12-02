@@ -7,8 +7,8 @@
             <div class="card">
                 <div class="card-body">
                     <div>
-                        @can('users_create')
-                            <a href="{{ route('users.create')}}" class="btn btn-sm btn-primary float-right">create user</a>
+                        @can('companies_create')
+                            <a href="{{ route('companies.create')}}" class="btn btn-sm btn-primary float-right">create company</a>
                         @endcan                
                     </div>
                     <br><br>
@@ -18,32 +18,27 @@
                                 <tr>
                                     <th width="50px">id</th>
                                     <th>Name</th>
-                                    <th colspan="4" class="col-md-2">&nbsp;</th>
+                                    <th colspan="3" class="col-md-2">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($users as $user)
+                                @foreach($companies as $company)
                                 <tr>
-                                    <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $company->id }}</td>
+                                    <td>{{ $company->name }}</td>
                                     <td>
-                                        @can('users_show')
-                                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Info</a>
+                                        @can('companies_show')
+                                            <a href="{{ route('companies.show', $company->id) }}" class="btn btn-sm btn-outline-dark float-right">Info</a>
                                         @endcan
                                     </td>
                                     <td>
-                                        @can('users_edit')
-                                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Edit</a>
+                                        @can('companies_edit')
+                                            <a href="{{ route('companies.edit', $company->id) }}" class="btn btn-sm btn-outline-dark float-right">Edit</a>
                                         @endcan
                                     </td>
                                     <td>
-                                        @can('users_show')
-                                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Permissions</a>
-                                        @endcan
-                                    </td>
-                                    <td>
-                                        @can('users_destroy')
-                                            <form action="{{ route('users.destroy', $user->id) }}"  method="POST">
+                                        @can('companies_destroy')
+                                            <form action="{{ route('companies.destroy', $company->id) }}"  method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-sm btn-outline-danger float-right" type="submit">Delete</button>
@@ -54,7 +49,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $users->render() }}
+                        {{ $companies->render() }}
                     </div>
                 </div>
             </div>

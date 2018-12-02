@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Department;
 use Validator;
 use Redirect;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
-
-class UserController extends Controller
+class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +16,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate();
+        $departments = Department::paginate();
 
-        return view('users.index', compact('users'));
-
+        return view('departments.index', compact('departments'));
     }
 
     /**
@@ -32,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('departments.create');
     }
 
     /**
@@ -45,9 +41,15 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191|unique:users',
-            'password' => 'required|string|min:6|confirmed',
         ]);
+
+        if (request('email')) {
+            $this->validate(request(), [
+                'email' => 'string|email|max:191',
+            ]);
+
+            $department->email = request('email');
+        }
 
         if($validator->fails()) {
             return Redirect::back()
@@ -55,58 +57,55 @@ class UserController extends Controller
                 ->withErrors($validator);
         }
 
-        $request['password'] = Hash::make(request('password'));
-        
-        User::create($request->all());
+        Department::create($request->all());
 
-       // $request->user()->sendEmailVerificationNotification();
-
-        return back()->with('status', 'User created');
+        return back()->with('status', 'Department created');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Department $department)
     {
-        return view('users.show', compact('user'));
+        return view('departments.show', compact('department'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Department $department)
     {
-        return view('users.edit', compact('user'));
+        return view('departments.edit', compact('department'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Department $department)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
+
         ]);
 
-        $user->name = request('name');
+        $department->name = request('name');
 
-        if (request('password')) {
+        if (request('email')) {
             $this->validate(request(), [
-                'password' => 'string|min:6|confirmed|max:191',
+                'email' => 'string|email|max:191',
             ]);
 
-            $user->password = Hash::make(request('password'));
+            $department->email = request('email');
         }
 
         if($validator->fails()) {
@@ -114,22 +113,22 @@ class UserController extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
-        
-        $user->save();
 
-        return back()->with('status', 'Profile updated');
-    } 
+        $department->save();
+
+        return back()->with('status', 'Updated department data');
+    }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Department $department)
     {
-        $user->delete();
+        $department->delete();
 
-        return back()->with('status', 'User deleted');
+        return back()->with('status', 'Department deleted');
     }
 }

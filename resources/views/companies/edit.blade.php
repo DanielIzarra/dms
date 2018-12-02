@@ -13,18 +13,16 @@
                 </div>
             @endif             
             <div class="card">
-                <div class="card-header">{{ __('Edit Profile') }}</div>
-
                 <div class="card-body">
-                    <form method="POST" action="{{ route('users.update', $user) }}">
+                    <form method="POST" action="{{ route('companies.update', $company) }}">
                         @csrf
-                        @method('PATCH') <!-- patch te redirige directamente al método update -->
+                        @method('PATCH')
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $user->name }}" required autofocus>
+                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $company->name }}" required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">
@@ -35,33 +33,24 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="cif" class="col-md-4 col-form-label text-md-right">{{ __('CIF/NIF') }}</label>
 
                             <div class="col-md-6">
-                                <input type="text" readonly class="col-form-label form-control-plaintext" id="email" value="{{ $user->email }}">
-                            </div>
-                        </div>
+                                <input id="cif" type="text" class="form-control{{ $errors->has('cif') ? ' is-invalid' : '' }}" name="cif" value="{{ $company->cif }}" required>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password">
-
-                                @if ($errors->has('password'))
+                                @if ($errors->has('cif'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
+                                        <strong>{{ $errors->first('cif') }}</strong>
                                     </span>
                                 @endif
-
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Password Confirmation">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ $company->email }}">
                             </div>
                         </div>
 

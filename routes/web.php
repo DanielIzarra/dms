@@ -27,7 +27,7 @@ Route::resource('User', 'UserController');
 //Route::patch('profile/update/{user}', 'UserController@update')->name('user.update');
 //Route::patch('user/{user}', 'UserController@update')->name('users.update')->middleware('permission:users.edit');
 
-Route::middleware(['auth', 'verified'])->group(function(){
+Route::middleware(['auth'=>'verified'])->group(function(){
    
     // Users
 
