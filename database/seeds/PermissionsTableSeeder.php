@@ -13,33 +13,33 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         Permission::create([
-            'name'         => 'Crear usuario',
+            'name'         => 'Crear usuario empresa',
             'slug'         => 'users_create',
-            'description'  => 'Crea un nuevo usuario',
+            'description'  => 'Crea un nuevo usuario en la empresa',
         ]);
 
         Permission::create([
-            'name'         => 'Ver usuarios',
+            'name'         => 'Ver usuarios empresa',
             'slug'         => 'users_index',
-            'description'  => 'Muestra una lista de los usuarios',
+            'description'  => 'Muestra una lista de los usuarios de la empresa',
         ]);
 
         Permission::create([
-            'name'         => 'Ver perfil de usuario',
+            'name'         => 'Ver perfil de usuario empresa',
             'slug'         => 'users_show',
-            'description'  => 'Permite ver la información de un usuario',
+            'description'  => 'Permite ver la información de un usuario de la empresa',
         ]);
 
         Permission::create([
-            'name'         => 'Editar perfil de usuario',
+            'name'         => 'Editar perfil de usuario empresa',
             'slug'         => 'users_edit',
-            'description'  => 'Permite editar la información de un usuario',
+            'description'  => 'Permite editar la información de un usuario de la empresa',
         ]);
 
         Permission::create([
-            'name'         => 'Eliminar usuario',
+            'name'         => 'Eliminar usuario empresa',
             'slug'         => 'users_destroy',
-            'description'  => 'Elimina a un usuario',
+            'description'  => 'Elimina a un usuario de la empresa',
         ]);
 
         Permission::create([

@@ -28,10 +28,10 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Role $role)
     {
         $permissions = Permission::all();
-        return view('roles.create', compact('permissions'));
+        return view('roles.create', compact('role','permissions'));
     }
 
     /**
@@ -74,7 +74,8 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $permissions = Permission::all();
-        return view('roles.edit', compact('role', 'permissions'));
+        $checked_permissions = $role->permissions()->get();
+        return view('roles.edit', compact('role', 'permissions', 'checked_permissions'));
     }
 
     /**

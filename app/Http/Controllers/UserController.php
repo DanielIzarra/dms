@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\User;
 use Validator;
 use Redirect;
+use Caffeinated\Shinobi\Models\Permission;
+use Caffeinated\Shinobi\Models\Role;
+use Caffeinated\Shinobi\Traits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +22,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        // $companyId = Auth::user()->company()->id;
+        // $users = Company::where('id', $companyID)->user()->paginate();
         $users = User::paginate();
 
         return view('users.index', compact('users'));
@@ -32,7 +37,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $permissions = Permission::all();
+        $roles = Role::all();
+
+        return view('users.create', compact('permissions', 'roles'));
     }
 
     /**
@@ -57,7 +65,11 @@ class UserController extends Controller
 
         $request['password'] = Hash::make(request('password'));
         
-        User::create($request->all());
+        $user = User::create($request->all());
+
+        $user->permissions()->sync($request->get('permissions'));
+
+        $user->roles()->sync($request->get('roles'));
 
        // $request->user()->sendEmailVerificationNotification();
 
@@ -83,7 +95,13 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $permissions = Permission::all();
+        $checked_permissions = $user->permissions()->get();
+        //$checked_permissions = $user->permissions()->pluck('permission_id');
+
+        $roles = Role::all();
+        $checked_roles = $user->roles()->get();
+        return view('users.edit', compact('user', 'permissions', 'checked_permissions', 'roles', 'checked_roles'));        
     }
 
     /**
@@ -114,11 +132,16 @@ class UserController extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
-        
+
+       // $user->update($request->all());
         $user->save();
 
+        $user->permissions()->sync($request->get('permissions'));
+
+        $user->roles()->sync($request->get('roles'));
+
         return back()->with('status', 'Profile updated');
-    } 
+    }
 
     /**
      * Remove the specified resource from storage.

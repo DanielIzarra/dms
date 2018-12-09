@@ -52,31 +52,46 @@
                                     <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="description" rows="3" cols="50" maxlength="100" class="form-control" name="description" value="{{ old('description') ?: $role->description }}" placeholder="{{ __('Description') }}"></textarea>
+                                        <textarea id="description" rows="3" cols="50" maxlength="100" class="form-control" name="description" placeholder="{{ __('Description') }}">{{ $role->description }}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-6 offset-md-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ __('Save') }}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-6 col-sm-12">
-                                <ul class="list-unstyled" style="height: 200px; overflow-y: scroll;">
+                                <ul class="list-unstyled" style="height: 200px; overflow-y: auto;">
                                     @foreach($permissions as $permission)
-                                        <li title="{{ $permission->description ?: $permission->name }}">
-                                            <label>
-                                                <input type="checkbox" name="permissions[]" value="{{ old('$permission->id') }}">
-                                                {{ $permission->name }}
-                                                ({{ $permission->description ?: $permission->name }})
-                                            </label>
-                                        </li>
+                                        @php($change = True)
+                                        @foreach($checked_permissions as $checked_permission)
+                                            @if($permission->id == $checked_permission->id)
+                                                <li title="{{ $permission->description ?: $permission->name }}">
+                                                    <label class="form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" checked>
+                                                        {{ $permission->name }}
+                                                        ({{ $permission->description ?: $permission->name }})
+                                                        @php($change = False)
+                                                    </label>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                        @if($change == True)
+                                            <li title="{{ $permission->description ?: $permission->name }}">
+                                                <label class="form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}">
+                                                    {{ $permission->name }}
+                                                    ({{ $permission->description ?: $permission->name }})
+                                                </label>
+                                            </li>
+                                        @endif                                    
                                     @endforeach
                                 </ul>
-                                </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Save') }}
-                                </button>
                             </div>
                         </div>
                     </form>

@@ -4,6 +4,14 @@
 <div class="container-fluid">
     <div class="row justify-content-end">
         <div class="col-md-10">
+            @if (session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('status') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>                    
+                </div>
+            @endif 
             <div class="card">
                 <div class="card-body">
                     <div>
@@ -34,11 +42,6 @@
                                     <td>
                                         @can('users_edit')
                                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Edit</a>
-                                        @endcan
-                                    </td>
-                                    <td>
-                                        @can('users_show')
-                                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Permissions</a>
                                         @endcan
                                     </td>
                                     <td>

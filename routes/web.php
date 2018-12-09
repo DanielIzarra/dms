@@ -43,9 +43,9 @@ Route::middleware(['auth'=>'verified'])->group(function(){
     
     Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('permission:users_destroy');
     
-    Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('permission:users_edit');
+    Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('permission:users_edit'); 
 
-
+    
     // Companies
 
     Route::post('companies/store', 'CompanyController@store')->name('companies.store')->middleware('permission:companies_create');
