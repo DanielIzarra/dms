@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Company;
+use App\Department;
 use Validator;
 use Redirect;
 use Caffeinated\Shinobi\Models\Permission;
@@ -21,14 +23,25 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        // $companyId = Auth::user()->company()->id;
-        // $users = Company::where('id', $companyID)->user()->paginate();
+    { 
         $users = User::paginate();
 
-        return view('users.index', compact('users'));
-
+        return view('users.index', compact('users'));     
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_Company(Company $company)
+    {
+        $users = User::where('company_id', '=', $company->id)->paginate(5);
+
+        return view('users.index_company', compact('users'));
+    }  
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -38,9 +51,9 @@ class UserController extends Controller
     public function create()
     {
         $permissions = Permission::all();
-        $roles = Role::all();
+        $allroles = Role::all();
 
-        return view('users.create', compact('permissions', 'roles'));
+        return view('users.create', compact('permissions', 'allroles'));
     }
 
     /**
@@ -49,7 +62,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
@@ -63,9 +76,14 @@ class UserController extends Controller
                 ->withErrors($validator);
         }
 
-        $request['password'] = Hash::make(request('password'));
         
-        $user = User::create($request->all());
+        $user->name = request('name');
+        $user->email = request('email');
+        $user->password = Hash::make(request('password'));
+        $user->company_id = Auth::user()->company_id;
+        
+        
+        $user->save();
 
         $user->permissions()->sync($request->get('permissions'));
 
@@ -84,7 +102,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        //return view('users.show', compact('user'));
     }
 
     /**

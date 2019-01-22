@@ -18,7 +18,7 @@
                                 <tr>
                                     <th width="50px">id</th>
                                     <th>Name</th>
-                                    <th colspan="3" class="col-md-2">&nbsp;</th>
+                                    <th colspan="4" class="col-md-2">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -26,6 +26,11 @@
                                 <tr>
                                     <td>{{ $company->id }}</td>
                                     <td>{{ $company->name }}</td>
+                                    <td>
+                                        @can('users_index_company')
+                                            <a href="{{ route('users.index_company', $company->id) }}" class="btn btn-sm btn-outline-dark float-right">Users</a>
+                                        @endcan
+                                    </td>
                                     <td>
                                         @can('companies_show')
                                             <a href="{{ route('companies.show', $company->id) }}" class="btn btn-sm btn-outline-dark float-right">Info</a>

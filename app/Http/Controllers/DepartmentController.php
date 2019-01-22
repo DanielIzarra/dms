@@ -6,6 +6,7 @@ use App\Department;
 use Validator;
 use Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DepartmentController extends Controller
 {
@@ -37,7 +38,7 @@ class DepartmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Department $department)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:191',
@@ -57,7 +58,11 @@ class DepartmentController extends Controller
                 ->withErrors($validator);
         }
 
-        Department::create($request->all());
+        $department->name = request('name');
+        $department->email = request('email');
+        $department->company_id = Auth::user()->company_id;        
+        
+        $department->save();
 
         return back()->with('status', 'Department created');
     }

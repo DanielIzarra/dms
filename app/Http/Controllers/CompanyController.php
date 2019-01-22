@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Company;
 use Validator;
 use Redirect;
+use Caffeinated\Shinobi\Models\Permission;
+use Caffeinated\Shinobi\Traits;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class CompanyController extends Controller
 {
@@ -21,6 +26,8 @@ class CompanyController extends Controller
         return view('companies.index', compact('companies'));
     }
 
+    
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -28,7 +35,9 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('companies.create');
+        $permissions = Permission::all();
+
+        return view('companies.create', compact('permissions'));
     }
 
     /**
@@ -37,19 +46,22 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Company $company, User $user)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:191',
-            'cif' => 'required|string|max:191',
+            'company_name' => 'required|string|max:191',
+            'cif' => 'required|string|max:191|unique:companies',
+            'user_name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:users',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
-        if (request('email')) {
+        if (request('company_email')) {
             $this->validate(request(), [
-                'email' => 'string|email|max:191',
+                'company_email' => 'string|email|max:191',
             ]);
 
-            $department->email = request('email');
+            $company->email = request('company_email');
         }
 
         if($validator->fails()) {
@@ -58,7 +70,21 @@ class CompanyController extends Controller
                 ->withErrors($validator);
         }
 
-        Company::create($request->all());
+        $company->name = request('company_name');
+        $company->cif = request('cif');
+
+        $company->save();
+
+        $companyId = Company::where('cif', '=', request('cif'))->pluck('id');
+        $user->company_id = $companyId[0];
+        
+        $user->name = request('user_name');
+        $user->email = request('email');
+        $user->password = Hash::make(request('password'));
+        
+        $user->save();
+
+        $user->permissions()->sync($request->get('permissions'));
 
         return back()->with('status', 'Company created');
     }
@@ -107,7 +133,7 @@ class CompanyController extends Controller
                 'email' => 'string|email|max:191',
             ]);
 
-            $department->email = request('email');
+            $company->email = request('email');
         }
 
         if($validator->fails()) {

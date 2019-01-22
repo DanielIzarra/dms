@@ -30,29 +30,31 @@ Route::resource('User', 'UserController');
 Route::middleware(['auth'=>'verified'])->group(function(){
    
     // Users
+        
+    Route::get('users/create', 'UserController@create')->name('users.create')->middleware('permission:users_create');
 
     Route::post('users/store', 'UserController@store')->name('users.store')->middleware('permission:users_create');
+
+    Route::get('users/company/{company}', 'UserController@index_Company')->name('users.index_company')->middleware('permission:users_index_company');
+
+    //Route::get('users/{user}', 'UserController@show')->name('users.show')->middleware('permission:users_show');
     
     Route::get('users', 'UserController@index')->name('users.index')->middleware('permission:users_index');
+  
+    Route::patch('users/{user}', 'UserController@update')->name('users.update')->middleware('permission:users_edit');    
     
-    Route::get('users/create', 'UserController@create')->name('users.create')->middleware('permission:users_create');
+    Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('permission:users_destroy');    
     
-    Route::patch('users/{user}', 'UserController@update')->name('users.update')->middleware('permission:users_edit');
-    
-    Route::get('users/{user}', 'UserController@show')->name('users.show')->middleware('permission:users_show');
-    
-    Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('permission:users_destroy');
-    
-    Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('permission:users_edit'); 
+    Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('permission:users_edit');
 
     
     // Companies
 
     Route::post('companies/store', 'CompanyController@store')->name('companies.store')->middleware('permission:companies_create');
     
+    Route::get('companies/create', 'CompanyController@create')->name('companies.create')->middleware('permission:companies_create');    
+       
     Route::get('companies', 'CompanyController@index')->name('companies.index')->middleware('permission:companies_index');
-    
-    Route::get('companies/create', 'CompanyController@create')->name('companies.create')->middleware('permission:companies_create');
     
     Route::patch('companies/{company}', 'CompanyController@update')->name('companies.update')->middleware('permission:companies_edit');
     

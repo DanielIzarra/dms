@@ -15,10 +15,11 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('companies_id')->unsigned()->index();
-            $table->foreign('companies_id')->references('id')->on('companies')->onDelete('cascade');
-            $table->integer('departments_id')->unsigned()->index();
-            $table->foreign('departments_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->integer('company_id')->unsigned()->index();
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->integer('department_id')->unsigned()->nullable()->index();
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
+
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

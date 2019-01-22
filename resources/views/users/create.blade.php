@@ -96,7 +96,7 @@
                         <div class="form-group row">
                             <div class="col-md-10">
                                 <ul class="list-unstyled" style="height: 200px; overflow-y: auto;">
-                                    @foreach($roles as $role)
+                                    @foreach($allroles as $role)
                                         <li title="{{ $role->description ?: $role->name }}">
                                             <label class="form-check-inline">
                                                 <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}"

@@ -4,11 +4,19 @@
 <div class="container-fluid">
     <div class="row justify-content-end">
         <div class="col-md-10">
+            @if (session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('status') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>                    
+                </div>
+            @endif 
             <div class="card">
                 <div class="card-body">
                     <div>
-                        @can('departments_create')
-                            <a href="{{ route('departments.create')}}" class="btn btn-sm btn-primary float-right">create department</a>
+                        @can('users_create')
+                            <a href="{{ route('users.create')}}" class="btn btn-sm btn-primary float-right">create user</a>
                         @endcan                
                     </div>
                     <br><br>
@@ -18,28 +26,22 @@
                                 <tr>
                                     <th width="50px">id</th>
                                     <th>Name</th>
-                                    <th colspan="4" class="col-md-2">&nbsp;</th>
+                                    <th colspan="2" class="col-md-1">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($departments as $department)
+                                @foreach($users as $user)
                                 <tr>
-                                    <td>{{ $department->id }}</td>
-                                    <td>{{ $department->name }}</td>
-
+                                    <td>{{ $user->id }}</td>
+                                    <td>{{ $user->name }}</td>
                                     <td>
-                                        @can('departments_show')
-                                            <a href="{{ route('departments.show', $department->id) }}" class="btn btn-sm btn-outline-dark float-right">Info</a>
+                                        @can('users_edit')
+                                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Edit</a>
                                         @endcan
                                     </td>
                                     <td>
-                                        @can('departments_edit')
-                                            <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-sm btn-outline-dark float-right">Edit</a>
-                                        @endcan
-                                    </td>
-                                    <td>
-                                        @can('departments_destroy')
-                                            <form action="{{ route('departments.destroy', $department->id) }}"  method="POST">
+                                        @can('users_destroy')
+                                            <form action="{{ route('users.destroy', $user->id) }}"  method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-sm btn-outline-danger float-right" type="submit">Delete</button>
@@ -50,7 +52,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $departments->render() }}
                     </div>
                 </div>
             </div>

@@ -26,19 +26,14 @@
                                 <tr>
                                     <th width="50px">id</th>
                                     <th>Name</th>
-                                    <th colspan="4" class="col-md-2">&nbsp;</th>
+                                    <th colspan="2" class="col-md-1">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($users as $user)
                                 <tr>
                                     <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>
-                                        @can('users_show')
-                                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Info</a>
-                                        @endcan
-                                    </td>
+                                    <td>{{ $user->name }}</td> 
                                     <td>
                                         @can('users_edit')
                                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-outline-dark float-right">Edit</a>

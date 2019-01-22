@@ -105,7 +105,7 @@
                             </ul>
                         </div>
 
-                        <div class="col-md-6 col-sm-12">
+                        <div class="form-group col-md-8">
                             <ul class="list-unstyled" style="height: 200px; overflow-y: auto;">
                                 @foreach($roles as $role)
                                     @php($change = True)

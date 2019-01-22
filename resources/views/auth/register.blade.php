@@ -61,6 +61,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="company_id" class="col-md-4 col-form-label text-md-right">{{ __('company_id') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="company_id" type="text" class="form-control{{ $errors->has('company_id') ? ' is-invalid' : '' }}" name="company_id" required>
+
+                                @if ($errors->has('company_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('company_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

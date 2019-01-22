@@ -11,10 +11,10 @@ class Company extends Model
     ];
 
     public function user(){
-        return $this->hasMany('App/User');
+        return $this->hasMany('App\User');
     }
 
     public function department(){
-        return $this->hasMany('App/Department');
+        return $this->hasMany('App\Department');
     }
 }

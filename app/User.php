@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'company_id'
     ];
 
     /**
@@ -30,10 +30,10 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     public function company(){
-        return $this->belongsTo('App/Company');
+        return $this->belongsTo('App\Company');
     }
 
     public function department(){
-        return $this->belongsTo('App/Department');
+        return $this->belongsTo('App\Department');
     }
 }
