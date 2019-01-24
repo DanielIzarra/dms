@@ -125,6 +125,7 @@
                             <div class="col-md-6 col-sm-12">
                                 <ul class="list-unstyled" style="height: 200px; overflow-y: auto;">
                                     @foreach($permissions as $permission)
+                                        @if($permission->isroot == 0)
                                         <li title="{{ $permission->description ?: $permission->name }}">
                                             <label class="form-check-inline">
                                                 <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}"
@@ -133,6 +134,7 @@
                                                 ({{ $permission->description ?: $permission->name }})                                      
                                             </label>
                                         </li>
+                                        @endif
                                     @endforeach
                                 </ul>
                             </div>

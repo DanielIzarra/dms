@@ -79,27 +79,29 @@
                         <div class="col-md-6 col-sm-12">
                             <ul class="list-unstyled" style="height: 200px; overflow-y: auto;">
                                 @foreach($permissions as $permission)
-                                    @php($change = True)
-                                    @foreach($checked_permissions as $checked_permission)
-                                         @if($permission->id == $checked_permission->id)
+                                    @if($permission->isroot == 0)
+                                        @php($change = True)
+                                        @foreach($checked_permissions as $checked_permission)
+                                            @if($permission->id == $checked_permission->id)
+                                                <li title="{{ $permission->description ?: $permission->name }}">
+                                                    <label class="form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" checked>
+                                                        {{ $permission->name }}
+                                                        ({{ $permission->description ?: $permission->name }})
+                                                        @php($change = False)
+                                                    </label>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                        @if($change == True)
                                             <li title="{{ $permission->description ?: $permission->name }}">
                                                 <label class="form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" checked>
+                                                    <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}">
                                                     {{ $permission->name }}
                                                     ({{ $permission->description ?: $permission->name }})
-                                                    @php($change = False)
                                                 </label>
                                             </li>
                                         @endif
-                                    @endforeach
-                                    @if($change == True)
-                                        <li title="{{ $permission->description ?: $permission->name }}">
-                                            <label class="form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}">
-                                                {{ $permission->name }}
-                                                ({{ $permission->description ?: $permission->name }})
-                                            </label>
-                                        </li>
                                     @endif
                                 @endforeach
                             </ul>
@@ -108,28 +110,30 @@
                         <div class="form-group col-md-8">
                             <ul class="list-unstyled" style="height: 200px; overflow-y: auto;">
                                 @foreach($roles as $role)
-                                    @php($change = True)
-                                    @foreach($checked_roles as $checked_role)
-                                         @if($role->id == $checked_role->id)
+                                    @if($role->name != 'admin')
+                                        @php($change = True)
+                                        @foreach($checked_roles as $checked_role)
+                                            @if($role->id == $checked_role->id)
+                                                <li title="{{ $role->description ?: $role->name }}">
+                                                    <label class="form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" checked>
+                                                        {{ $role->name }}
+                                                        ({{ $role->description ?: $role->name }})
+                                                        @php($change = False)
+                                                    </label>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                        @if($change == True)
                                             <li title="{{ $role->description ?: $role->name }}">
                                                 <label class="form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" checked>
+                                                    <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}">
                                                     {{ $role->name }}
                                                     ({{ $role->description ?: $role->name }})
-                                                    @php($change = False)
                                                 </label>
                                             </li>
-                                        @endif
-                                    @endforeach
-                                    @if($change == True)
-                                        <li title="{{ $role->description ?: $role->name }}">
-                                            <label class="form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}">
-                                                {{ $role->name }}
-                                                ({{ $role->description ?: $role->name }})
-                                            </label>
-                                        </li>
-                                    @endif                                    
+                                        @endif 
+                                    @endif                                   
                                 @endforeach
                             </ul>
                         </div>

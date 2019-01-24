@@ -54,7 +54,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $companies->render() }}
                     </div>
                 </div>
             </div>

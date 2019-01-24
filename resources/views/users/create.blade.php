@@ -81,6 +81,7 @@
                             <div class="col-md-6 col-sm-12">
                                 <ul class="list-unstyled" style="height: 200px; overflow-y: auto;">
                                     @foreach($permissions as $permission)
+                                        @if($permission->isroot == 0)
                                         <li title="{{ $permission->description ?: $permission->name }}">
                                             <label class="form-check-inline">
                                                 <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}"
@@ -89,14 +90,16 @@
                                                 ({{ $permission->description ?: $permission->name }})                                      
                                             </label>
                                         </li>
+                                        @endif
                                     @endforeach
                                 </ul>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-10">
-                                <ul class="list-unstyled" style="height: 200px; overflow-y: auto;">
+                                <ul class="list-unstyled" style="height: 200px; overflow-y: auto;">  
                                     @foreach($allroles as $role)
+                                        @if($role->name != 'admin')
                                         <li title="{{ $role->description ?: $role->name }}">
                                             <label class="form-check-inline">
                                                 <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}"
@@ -105,6 +108,7 @@
                                                 ({{ $role->description ?: $role->name }})                                      
                                             </label>
                                         </li>
+                                        @endif
                                     @endforeach
                                 </ul>
                             </div>
